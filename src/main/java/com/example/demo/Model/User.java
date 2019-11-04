@@ -8,8 +8,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 
 @Entity
@@ -17,17 +19,26 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @NotNull
     @Column(nullable = false)
     private String name;
-
+    @NotNull
     @Column(unique = true)
     private String email;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
+    @NotNull
     @Column(nullable = false)
     private String role;
+    @ManyToOne
+    private Department department;
+    @OneToMany (mappedBy = "owner", cascade = CascadeType.ALL)
+    List<Contact> contacts;
+    @OneToMany (mappedBy = "user", cascade = CascadeType.ALL)
+    List<ContactrGroup> contactrGroups;
 
     public User() {
+
     }
 
     public User(String name, String email, String password, String role) {
@@ -37,10 +48,6 @@ public class User implements UserDetails {
         this.role = role;
 
     }
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
-
 
     public Long getId() {
         return id;

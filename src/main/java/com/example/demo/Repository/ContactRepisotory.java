@@ -1,8 +1,13 @@
 package com.example.demo.Repository;
 
 import com.example.demo.Model.Contact;
+import com.example.demo.Model.Department;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -10,11 +15,17 @@ import java.util.List;
 public interface ContactRepisotory extends CrudRepository<Contact, Long> {
     List<Contact> findBylastName(String lastName);
 
-    List<Contact> findByCity(String city);
 
     List<Contact> findByselectCheck(boolean selectCheck);
 
-    List<Contact> findByplacebo(String placebo);
+    List<Contact> findByDepartment(Department department);
 
-     List<Contact> findByCompany(String Company);
+    @Transactional
+    @Modifying
+    @Query("Update Contact c Set c=:uContact Where c.id=:id")
+     void update (@Param("uContact") Contact contact,@Param("id") Long id  );
+    @Transactional
+    @Modifying
+    @Query("Update Contact c Set c.CheckRole=:CheckRole Where c.id=:id")
+    void add (@Param("CheckRole")boolean CheckRole,@Param("id") Long id  );
 }

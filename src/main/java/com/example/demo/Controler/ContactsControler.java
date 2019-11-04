@@ -5,27 +5,37 @@ import com.example.demo.Service.ContactsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
+@RestController
 @RequestMapping("/contacts")
 public class ContactsControler {
     @Autowired
     private ContactsService contactServ;
-
+@PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/home", method = RequestMethod.GET)
     public ModelAndView GetContacts(Model model) {
        model.addAttribute("contacts",contactServ.getContacts()) ;
     return new ModelAndView("HomeContact");
     }
-
+    @PreAuthorize("hasRole('USER')")
+    @RequestMapping(value = "/home", method = RequestMethod.GET)
+    public ModelAndView Contacts(Model model) {
+        model.addAttribute("contacts",contactServ.findByDepartment()) ;
+        return new ModelAndView("HomeContact");
+    }
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     public ModelAndView ContactById(@PathVariable Long id,Model model) {
         Contact contact = contactServ.findByID(id);
         if (contact == null) {
-
-        }  model.addAttribute("contacts",contactServ.getContacts()) ;
+        return new ModelAndView("redirect:/home");
+        }  if (!contact.isCheckRole())
+        {
+            return new ModelAndView("redirect:/home");
+        }
+        model.addAttribute("contacts",contactServ.getContacts()) ;
         return new ModelAndView("HomeContact");
     }
 

@@ -1,4 +1,3 @@
-/*
 package com.example.demo.configuration;
 
 import org.apache.tomcat.util.http.parser.Authorization;
@@ -20,7 +19,7 @@ public class AouthService extends AuthorizationServerConfigurerAdapter {
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         super.configure(clients);
-clients.inMemory()
+clients.inMemory();
 
     }
 
@@ -30,4 +29,3 @@ clients.inMemory()
         endpoints.authenticationManager(this.authenticationManager);
     }
 }
-*/

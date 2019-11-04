@@ -17,7 +17,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping(value = "/api")
+@RequestMapping(value = "/user")
 public class UserController {
     @Autowired
     UserService userService;
@@ -62,7 +62,6 @@ public class UserController {
 
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/users", method = RequestMethod.POST)
     public String createUser(@RequestBody User user) {
         if (userService.findUsername(user.getUsername()) != null) {
@@ -72,8 +71,6 @@ public class UserController {
         return "redirect:/ll";
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @Transactional
     @RequestMapping(value = "/users", method = RequestMethod.PUT)
     public User updateUser(@RequestBody User appUser) {
         if (userService.findUsername(appUser.getUsername()) != null
