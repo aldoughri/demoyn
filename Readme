@@ -1,0 +1,16 @@
+
+
+- @PreAuthorize annotation take roleVoter
+        <value>
+            ROLE_ADMIN > ROLE_STAFF
+            ROLE_STAFF > ROLE_USER
+            ROLE_USER > ROLE_GUEST
+        </value>
+
+and  this common-built-in for @PreAuthorize
+https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#el-common-built-in
+
+
+- List<> don't accept in select query
+- in repository define method is like select query with filtering
+- we can define update query method

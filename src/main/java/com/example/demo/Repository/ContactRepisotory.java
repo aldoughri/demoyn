@@ -17,8 +17,14 @@ public interface ContactRepisotory extends CrudRepository<Contact, Long> {
 
 
     List<Contact> findByselectCheck(boolean selectCheck);
+    @Query("Select c From Contact c")
+    List<Contact> GetContactsAdmin();
+    @Query("Select c  From User u,Contact c,Department d Where u.department =d.id AND c.CheckVal=true")
+    List<Contact> GetContactsEmployes();/******/
+    @Query("Select c  From User,Contact c  Where c.CheckVal=false ")
+    List<Contact> GetContactsValAdmin();
 
-    List<Contact> findByDepartment(Department department);
+
 
     @Transactional
     @Modifying
@@ -26,6 +32,6 @@ public interface ContactRepisotory extends CrudRepository<Contact, Long> {
      void update (@Param("uContact") Contact contact,@Param("id") Long id  );
     @Transactional
     @Modifying
-    @Query("Update Contact c Set c.CheckRole=:CheckRole Where c.id=:id")
-    void add (@Param("CheckRole")boolean CheckRole,@Param("id") Long id  );
+    @Query("Update Contact c Set c.CheckVal=:CheckVal Where c.id=:id")
+    void add (@Param("CheckVal")boolean CheckRole,@Param("id") Long id  );
 }

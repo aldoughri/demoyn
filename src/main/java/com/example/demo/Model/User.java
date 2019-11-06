@@ -31,11 +31,12 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String role;
     @ManyToOne
+    @JoinColumn
     private Department department;
     @OneToMany (mappedBy = "owner", cascade = CascadeType.ALL)
     List<Contact> contacts;
     @OneToMany (mappedBy = "user", cascade = CascadeType.ALL)
-    List<ContactrGroup> contactrGroups;
+    List<ContactsGroup> contactsGroups;
 
     public User() {
 

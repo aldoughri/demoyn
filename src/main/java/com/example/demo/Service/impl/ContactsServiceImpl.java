@@ -1,4 +1,4 @@
-package com.example.demo.Service;
+package com.example.demo.Service.impl;
 //// find by department
 //// find admin accept
 
@@ -6,6 +6,7 @@ import com.example.demo.Model.Contact;
 import com.example.demo.Model.Department;
 import com.example.demo.Model.User;
 import com.example.demo.Repository.ContactRepisotory;
+import com.example.demo.Service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
@@ -15,19 +16,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ContactsService {
+public class ContactsServiceImpl implements ContactService {
     @Autowired
     ContactRepisotory contactRepl;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String phoneNummber;
-    private String city;
-    private String company;
-    private String job;
-    private String organization;
-    private String adders;
-    private String placebo;
+
+    @Override
+    public void merge(List<Contact> contacts,Contact contact) {
+        contacts.forEach(con->contactRepl.update(con,con.getId()));
+        contactRepl.deleteAll(contacts);
+        contactRepl.save(contact);
+    }
+
     @Secured({"ROLE_ADMIN"})
     public List<Contact> getContacts() {
         List<Contact> contacts = new ArrayList<>();
@@ -64,39 +63,16 @@ public class ContactsService {
         return contactRepl.findBylastName(lastName);
     }
 
-    public List<Contact> findByDepartment(Department department) {
-        return contactRepl.findByDepartment(department);
+    public List<Contact> GetContactsEmployes() {
+        return contactRepl.GetContactsEmployes();
     }
 
-
-
-    public void marge(String lastName){
-
-    List<Contact> contacts1= contactRepl.findByselectCheck(true);
-    String firstName = "";
-
-    String email="";
-    String phoneNummber = "";
-    String city="";
-    String company="";
-    String job="";
-    String organization="";
-    String adders="";
-    String placebo="";
-    User user = null;
-
-
-    for (Contact contacct:contacts1){
-         email+=contacct.getEmail()+"\n";
-         phoneNummber+=contacct.getPhoneNummber()+"\n";
-         city+=contacct.getCity()+"\n";
-         company+=contacct.getCompany()+"\n";
-         adders+=contacct.getAdders()+"\n";
-         user=contacct.getOwner();
+    public List<Contact> GetContactsValAdmin() {
+        return contactRepl.GetContactsValAdmin();
     }
-   // Contact contact=new Contact("",lastName,email,phoneNummber,city,company,job,organization,adders,placebo,false,user);
-   Contact contact =new Contact();/**********/
-    contactRepl.save(contact);
-    contactRepl.deleteAll(contacts1);
+
+    public List<Contact> GetContactsAdmin() {
+        return  contactRepl.GetContactsAdmin();
     }
+
 }

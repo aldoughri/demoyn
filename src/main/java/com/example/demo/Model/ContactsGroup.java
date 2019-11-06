@@ -4,17 +4,19 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-public class ContactrGroup {
+@Entity
+public class ContactsGroup {
     @Id
     @GeneratedValue
     Long id;
     @NotNull
     String Name;
-    @OneToMany (mappedBy = "contactrGroup", cascade = CascadeType.ALL)
+    @OneToMany (mappedBy = "contactsGroup", cascade = CascadeType.ALL)
     List<Contact> groupContacts;
 @ManyToOne
+@JoinColumn
 User user;
-    public ContactrGroup() {
+    public ContactsGroup() {
         Name="Group "+ id;
     }
 
