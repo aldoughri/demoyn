@@ -3,23 +3,26 @@ package com.example.demo.Controler;
 import com.example.demo.Model.Department;
 import com.example.demo.Service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
+@PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/department")
 public class DepartmentController {
     @Autowired
     DepartmentService departmentService;
-    @RequestMapping("/getDepartments")
-    public ModelAndView getDepartments(){
-        return new ModelAndView("Employee","departments", departmentService.getDepartments());
+
+    @RequestMapping(value = "/getDepartments",method = RequestMethod.GET)
+    public ModelAndView getDepartments() {
+        return new ModelAndView("DepartmentHome", "departments", departmentService.getDepartments());
     }
 
 
     //STEP2
-    @RequestMapping("/{id}")
+    @RequestMapping(value = "/{id}",method = RequestMethod.GET)
     @ResponseBody
     public String show(@PathVariable Long id) {
         departmentService.getDepid(id);
@@ -27,7 +30,7 @@ public class DepartmentController {
     }
 
     //STEP3
-    @RequestMapping("/new")
+    @RequestMapping(value = "/new",method = RequestMethod.GET)
     public String employeeForm(Model model) {
 
         model.addAttribute("department", new Department());
@@ -42,8 +45,8 @@ public class DepartmentController {
         return "subission successful of no." + department.getId();
     }
 
-    @RequestMapping ("/del/{id}")
-    public String deleteDepartment(@PathVariable(value = "id") Long id){
+    @RequestMapping(value = "/del/{id}",method = RequestMethod.GET)
+    public String deleteDepartment(@PathVariable(value = "id") Long id) {
 
         departmentService.remove(id);
 
@@ -51,13 +54,4 @@ public class DepartmentController {
         return "delete successful of no." + id;
 
     }
-    /*@RequestMapping("/employees/newr")
-    public String rel(Model model) {
-        ConED  conED=new ConED();
-        DAO.findAll().forEach(dep->conED.dep.add(dep));
-        model.addAttribute("ConED", conED);
-        model.addAttribute("employee",new Employee());
-        return "relation";
-    }
-*/
 }

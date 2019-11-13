@@ -5,5 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface DepartmentDAO extends CrudRepository <Department,Long > {
+public interface DepartmentDAO extends CrudRepository<Department, Long> {
 }

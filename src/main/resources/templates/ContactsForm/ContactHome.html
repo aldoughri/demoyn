@@ -1,0 +1,54 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+
+    <title>Spring Framework Guru</title>
+
+    <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
+<p>AdrissBook</p>
+<p>&nbsp;</p>
+<table style="height: 47px; width: 524px;">
+    <thead>
+    <tr>
+
+        <td style=";"> </td>
+        <td style=";"> </td>
+        <td style=";">full Name</td>
+        <td style=";">Email</td>
+        <td style=";">Company</td>
+        <tr>
+        <td style=";">phone number</td>
+        <td style=";">city</td>
+        <td style=";">address</td>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="contact:${contacts}">
+        <td> <input th:field="*{contact.selectCheck}"  type="checkbox">select</td>
+        <td th:text="${contact.id}">...</td>
+        <td th:text="${contact.FullName}">...</td>
+        <td th:text="${contact.email}">...</td>
+        <td th:text="${contact.company}">...</td>
+        <tr th:each="c:${contact.contactMerges}">...</tr>
+        <td th:text="${c.phoneNummber}">...</td>
+        <td th:text="${c.city}">...</td>
+        <td th:text="${c.adders}">...</td>
+
+
+        <td>
+            <button class="btn btn-default btn-sm" ng-click="initEdit(contact)" type="button">
+                <span class="glyphicon glyphicon-edit"></span>
+            </button>
+        </td>
+        <td>
+            <button class="btn btn-default btn-sm" ng-click="deleteAddress(contact)" type="button">
+                <span class="glyphicon glyphicon-trash"></span>
+            </button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

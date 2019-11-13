@@ -1,0 +1,46 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+
+    <title>Spring Framework Guru</title>
+
+    <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
+<p>AdrissBook</p>
+<p>&nbsp;</p>
+<table class="table table-striped">
+    <thead>
+    <tr>
+
+        <td style=";"> </td>
+        <td style=";"> </td>
+        <td style=";">full Name</td>
+        <td style=";">Email</td>
+        <td style=";">Company</td>
+        <tr>
+        <td style=";">phone number</td>
+        <td style=";">city</td>
+        <td style=";">address</td>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="contact:${contacts}">
+        <td><label>
+            <input th:field="*{contact.selectCheck}"  type="checkbox">
+        </label>select</td>
+        <td th:text="${contact.id}">...</td><a href="/user/contacts/view/${contact.id}">Id</a>
+        <td th:text="${contact.FullName}">...</td>
+        <td th:text="${contact.email}">...</td>
+        <td th:text="${contact.company}">...</td>
+        <tr th:each="c:${contact.contactMerges}">...</tr>
+        <td th:text="${c.phoneNummber}">...</td>
+        <td th:text="${c.city}">...</td>
+        <td th:text="${c.adders}">...</td>
+        <td><a th:href="${'/user/contacts/view/' + contact.id}">View</a></td>
+        <td><a th:href="${'/user/contacts/update/' + contact.id}" >Update</a></td>
+        <td><a th:href="${'/user/contacts/delete/' + contact.id}" onclick="return confirm('Are you sure?')" >Delete</a></td>
+    </tbody>
+</table>
+</body>
+</html>

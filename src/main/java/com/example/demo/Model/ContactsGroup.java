@@ -11,13 +11,14 @@ public class ContactsGroup {
     Long id;
     @NotNull
     String Name;
-    @OneToMany (mappedBy = "contactsGroup", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "contactsGroup", cascade = CascadeType.ALL)
     List<Contact> groupContacts;
-@ManyToOne
-@JoinColumn
-User user;
+    @ManyToOne
+    @JoinColumn
+    User user;
+
     public ContactsGroup() {
-        Name="Group "+ id;
+        Name = "Group " + id;
     }
 
     public Long getId() {

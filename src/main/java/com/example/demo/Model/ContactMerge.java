@@ -2,7 +2,7 @@ package com.example.demo.Model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-
+@Entity
 public class ContactMerge {
     @Id
     @GeneratedValue
@@ -18,6 +18,7 @@ public class ContactMerge {
     @ManyToOne
     @JoinColumn
     private Contact contact;
+
     public ContactMerge() {
         city="Damas";
     }

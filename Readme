@@ -1,3 +1,7 @@
+-by default DAO can returned as JSON
+
+- owner ORM is can be delicate as ENUM in database
+
 
 
 - @PreAuthorize annotation take roleVoter
@@ -11,6 +15,17 @@ and  this common-built-in for @PreAuthorize
 https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#el-common-built-in
 
 
-- List<> don't accept in select query
+
+- @Transactional annotation by default If no rules are relevant to the exception
+it will be treated like DefaultTransactionAttribute
+(rolling back on RuntimeException and Error but not on checked exceptions).
+
+-Create update queries with the Spring Data JPA @Query annotation
+
+-Solution for cancel editing transaction:
+public abstract boolean clearAutomatically
+Defines whether we should clear the underlying persistence context after executing the modifying query.
+
+- Select ist<> don't accept in  query
 - in repository define method is like select query with filtering
 - we can define update query method

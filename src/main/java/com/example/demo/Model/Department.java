@@ -11,10 +11,11 @@ public class Department {
     Long id;
     @NotNull
     String Name;
-    @OneToMany (mappedBy = "department", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL)
     List<User> users;
+
     public Department() {
-        Name="CRM";
+        Name = "CRM";
     }
 
     public Long getId() {

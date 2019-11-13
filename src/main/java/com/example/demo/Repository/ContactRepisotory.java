@@ -1,7 +1,6 @@
 package com.example.demo.Repository;
 
 import com.example.demo.Model.Contact;
-import com.example.demo.Model.Department;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -17,21 +16,25 @@ public interface ContactRepisotory extends CrudRepository<Contact, Long> {
 
 
     List<Contact> findByselectCheck(boolean selectCheck);
-    @Query("Select c From Contact c")
-    List<Contact> GetContactsAdmin();
-    @Query("Select c  From User u,Contact c,Department d Where u.department =d.id AND c.CheckVal=true")
-    List<Contact> GetContactsEmployes();/******/
-    @Query("Select c  From User,Contact c  Where c.CheckVal=false ")
-    List<Contact> GetContactsValAdmin();
 
+    @Query("Select c,m From Contact c,ContactMerge m")
+    List<Contact> GetContactsAdmin();
+
+    @Query("Select c,m  From User u,Contact c,ContactMerge m, Department d Where u.department =d.id AND c.CheckVal=true")
+    List<Contact> GetContactsEmployes();
+
+    /******/
+    @Query("Select c  From User,Contact c,ContactMerge m Where c.CheckVal=false ")
+    List<Contact> GetContactsValAdmin();
 
 
     @Transactional
     @Modifying
     @Query("Update Contact c Set c=:uContact Where c.id=:id")
-     void update (@Param("uContact") Contact contact,@Param("id") Long id  );
+    void update(@Param("uContact") Contact contact, @Param("id") Long id);
+
     @Transactional
     @Modifying
     @Query("Update Contact c Set c.CheckVal=:CheckVal Where c.id=:id")
-    void add (@Param("CheckVal")boolean CheckRole,@Param("id") Long id  );
+    void add(@Param("CheckVal") boolean CheckRole, @Param("id") Long id);
 }

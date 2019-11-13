@@ -2,7 +2,9 @@ package com.example.demo.Model;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 
 @Entity
@@ -10,39 +12,44 @@ import javax.validation.constraints.NotNull;
 public class Contact {
 
 
+    @ManyToOne
+    @JoinColumn
+    ContactsGroup contactsGroup;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @NotNull
-    @Column(nullable = false)
+
+    private String FullName;
+
     private String firstName;
     @NotNull
     @Column(nullable = false)
-    private String lastName;
+    @NotEmpty
+    private String lastName;/**/
     @NotNull
     @Column(nullable = false, unique = true)
+    @NotEmpty
     private String email;
+    /***/
     @NotNull
-    @Column(nullable = false,unique = true)
-
-    private String phoneNummber;
-    @NotNull
-    @Column(nullable = false)
-    private String city;
+    @NotEmpty
     private String company;
-    private String adders;
+    /****/
+
     private boolean selectCheck = false;
-    private boolean CheckRole = false;
+    private boolean CheckVal = false;
     @ManyToOne
- /*   @JoinColumn
- */   private User owner;
-@ManyToOne
-ContactrGroup contactrGroup;
+    @JoinColumn
+    private User owner;
+    @OneToMany(mappedBy = "contact", cascade = CascadeType.ALL)
+    List<ContactMerge> contactMerges;
+
     public Contact() {
-        city="Damas";
-        company="my company";
+        company = "my company";
 
     }
+
 
     public Long getId() {
         return id;
@@ -50,6 +57,14 @@ ContactrGroup contactrGroup;
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getFullName() {
+        return FullName;
+    }
+
+    public void setFullName(String fullName) {
+        FullName = fullName;
     }
 
     public String getFirstName() {
@@ -76,36 +91,12 @@ ContactrGroup contactrGroup;
         this.email = email;
     }
 
-    public String getPhoneNummber() {
-        return phoneNummber;
-    }
-
-    public void setPhoneNummber(String phoneNummber) {
-        this.phoneNummber = phoneNummber;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
     public String getCompany() {
         return company;
     }
 
     public void setCompany(String company) {
         this.company = company;
-    }
-
-    public String getAdders() {
-        return adders;
-    }
-
-    public void setAdders(String adders) {
-        this.adders = adders;
     }
 
     public boolean isSelectCheck() {
@@ -116,12 +107,12 @@ ContactrGroup contactrGroup;
         this.selectCheck = selectCheck;
     }
 
-    public boolean isCheckRole() {
-        return CheckRole;
+    public boolean isCheckVal() {
+        return CheckVal;
     }
 
-    public void setCheckRole(boolean checkRole) {
-        CheckRole = checkRole;
+    public void setCheckVal(boolean CheckVal) {
+        this.CheckVal = CheckVal;
     }
 
     public User getOwner() {
@@ -132,12 +123,20 @@ ContactrGroup contactrGroup;
         this.owner = owner;
     }
 
-    public ContactrGroup getContactrGroup() {
-        return contactrGroup;
+    public ContactsGroup getContactsGroup() {
+        return contactsGroup;
     }
 
-    public void setContactrGroup(ContactrGroup contactrGroup) {
-        this.contactrGroup = contactrGroup;
+    public void setContactsGroup(ContactsGroup contactsGroup) {
+        this.contactsGroup = contactsGroup;
+    }
+
+    public List<ContactMerge> getContactMerges() {
+        return contactMerges;
+    }
+
+    public void setContactMerges(List<ContactMerge> contactMerges) {
+        this.contactMerges = contactMerges;
     }
 
     @Override
@@ -147,14 +146,12 @@ ContactrGroup contactrGroup;
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
-                ", phoneNummber='" + phoneNummber + '\'' +
-                ", city='" + city + '\'' +
                 ", company='" + company + '\'' +
-                ", adders='" + adders + '\'' +
                 ", selectCheck=" + selectCheck +
-                ", CheckRole=" + CheckRole +
+                ", CheckVal=" + CheckVal +
                 ", owner=" + owner +
-                ", contactrGroup=" + contactrGroup +
+                ", contactsGroup=" + contactsGroup +
+                ", contactMerges=" + contactMerges +
                 '}';
     }
 }
