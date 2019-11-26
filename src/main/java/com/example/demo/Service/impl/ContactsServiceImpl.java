@@ -31,35 +31,31 @@ public class ContactsServiceImpl implements ContactService {
     public List<Contact> getContacts() {
         List<Contact> contacts = new ArrayList<>();
 
-        contactRepl.findAll().forEach(contact -> contacts.add(contact));
+        contactRepl.findAll().forEach(contacts::add);
         return contacts;
     }
 
-    public void addContact(Contact contact) {
+    public Contact addContact(Contact contact) {
         contact.setCheckVal(false);
-        contactRepl.save(contact);
+        return contactRepl.save(contact);
     }
 
-    @Secured({"ROLE_ADMIN"})
-    public void AdminAddContact(Contact contact) {
-        contact.setCheckVal(true);
-        contactRepl.save(contact);
+
+    /* @Secured({"ROLE_ADMIN"})
+     public void AdminaddContact(boolean added, Long id) {
+         contactRepl.add(added, id);
+     }
+ */
+    public Contact updateContact(Long id, Contact contact) {
+
+        return contactRepl.findById(id).map(p -> {
+            p = contact;
+            p.setCheckVal(false);
+            return contactRepl.save(p);
+        }).get();
+
     }
 
-   /* @Secured({"ROLE_ADMIN"})
-    public void AdminaddContact(boolean added, Long id) {
-        contactRepl.add(added, id);
-    }
-*/
-    public void updateContact(Long id, Contact contact) {
-     contact.setCheckVal(false);
-        contactRepl.update(contact, id);
-    }
-
-    public void updateAdminContact(Long id, Contact contact) {
-        contact.setCheckVal(true);
-        contactRepl.update(contact, id);
-    }
 
     @Transactional
     public void deleteContact(Long id) {

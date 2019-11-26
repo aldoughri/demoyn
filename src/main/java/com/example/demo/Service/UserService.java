@@ -4,16 +4,13 @@ import com.example.demo.Model.User;
 import com.example.demo.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class UserService implements UserDetailsService {
+public class UserService {
     @Autowired
     UserRepository userRep;
 
@@ -32,13 +29,15 @@ public class UserService implements UserDetailsService {
     @Secured({"ROLE_ADMIN"})
     public void addUser(User user) {
 
-            userRep.save(user);
-        }
+        userRep.save(user);
+    }
+
     public void RegisterUser(User user) {
-        user.setRole("USER");
+        user.setRoles("USER");
 
         userRep.save(user);
     }
+
     /* public void updatePassword(String email, User user) {
          userRep.save(user);
      }
@@ -51,9 +50,4 @@ public class UserService implements UserDetailsService {
         userRep.deleteById(id);
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User appUser = userRep.findByEmail(username);
-        return appUser;
-    }
 }

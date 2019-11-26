@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @RestController
@@ -29,13 +32,21 @@ public class HomeController {
 
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ModelAndView createUser(@Autowired User appUser) {
+    public ModelAndView createUser(@Autowired User appUser, HttpServletRequest request) {
 
-        if (userService1.findUsername(appUser.getUsername()) != null) {
-            return new ModelAndView("redirect:/register","massage",
+        if (userService1.findUsername(appUser.getEmail()) != null) {
+            return new ModelAndView("redirect:/register", "massage",
                     "user is already registered");
         }
         userService1.RegisterUser(appUser);
+        @SuppressWarnings("unchecked")
+        List<User> msgs = (List<User>) request.getSession().getAttribute("MY_MESSAGES");
+        if (msgs == null) {
+            msgs = new ArrayList<>();
+            request.getSession().setAttribute("MY_MESSAGES", msgs);
+        }
+        msgs.add(appUser);
+        request.getSession().setAttribute("MY_MESSAGES", msgs);
         return new ModelAndView("redirect/");
     }
 
@@ -45,15 +56,23 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ModelAndView loginUser(User appUser, Model model) {
-        if (userService1.findUsername(appUser.getUsername()) == null) {
-            return new ModelAndView("redirect:/login","massage","Account dos'nt exist ");
+    public ModelAndView loginUser(User appUser, Model model, HttpServletRequest request) {
+        if (userService1.findUsername(appUser.getEmail()) == null) {
+            return new ModelAndView("redirect:/login", "massage", "Account dos'nt exist ");
 
         }
-
+        @SuppressWarnings("unchecked")
+        List<User> msgs = (List<User>) request.getSession().getAttribute("MY_MESSAGES");
+        if (msgs == null) {
+            msgs = new ArrayList<>();
+            request.getSession().setAttribute("MY_MESSAGES", msgs);
+        }
+        msgs.add(appUser);
+        request.getSession().setAttribute("MY_MESSAGES", msgs);
         return new ModelAndView("redirect/");
     }
-    @RequestMapping(value = "/user",method = RequestMethod.GET)
+
+    @RequestMapping(value = "/user", method = RequestMethod.GET)
     public Principal user(Principal principal) {
         return principal;
     }

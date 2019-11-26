@@ -7,10 +7,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
 @Service
 public class GrupsSrevice {
     @Autowired
     GroupDAO groupDAO;
+
     public void remove(Long id) {
         groupDAO.deleteById(id);
     }
@@ -20,12 +22,12 @@ public class GrupsSrevice {
     }
 
     public ContactsGroup getId(Long id) {
-    return  groupDAO.findById(id).get();
+        return groupDAO.findById(id).get();
     }
 
     public List<ContactsGroup> getGroups() {
-    List<ContactsGroup> groups=new ArrayList<>();
-    groupDAO.findAll().forEach(group->groups.add(group));
+        List<ContactsGroup> groups = new ArrayList<>();
+        groupDAO.findAll().forEach(groups::add);
         return groups;
     }
 }

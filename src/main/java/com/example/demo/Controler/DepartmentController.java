@@ -15,14 +15,14 @@ public class DepartmentController {
     @Autowired
     DepartmentService departmentService;
 
-    @RequestMapping(value = "/getDepartments",method = RequestMethod.GET)
+    @RequestMapping(value = "/getDepartments", method = RequestMethod.GET)
     public ModelAndView getDepartments() {
         return new ModelAndView("DepartmentHome", "departments", departmentService.getDepartments());
     }
 
 
     //STEP2
-    @RequestMapping(value = "/{id}",method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
     public String show(@PathVariable Long id) {
         departmentService.getDepid(id);
@@ -30,14 +30,20 @@ public class DepartmentController {
     }
 
     //STEP3
-    @RequestMapping(value = "/new",method = RequestMethod.GET)
+    @RequestMapping(value = "/new", method = RequestMethod.GET)
     public String employeeForm(Model model) {
 
         model.addAttribute("department", new Department());
         return "Dform";
     }
 
-    //STEP4
+    @RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
+    public String employeeUpdate(Model model, @PathVariable Long id) {
+        Department department = departmentService.getDepid(id);
+        model.addAttribute("department", department);
+        return "Dform";
+    }
+
     @PostMapping("/departments")
     @ResponseBody
     public String greetingSubmit(@ModelAttribute Department department) {
@@ -45,7 +51,7 @@ public class DepartmentController {
         return "subission successful of no." + department.getId();
     }
 
-    @RequestMapping(value = "/del/{id}",method = RequestMethod.GET)
+    @RequestMapping(value = "/del/{id}", method = RequestMethod.GET)
     public String deleteDepartment(@PathVariable(value = "id") Long id) {
 
         departmentService.remove(id);

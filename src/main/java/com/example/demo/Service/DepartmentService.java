@@ -11,11 +11,11 @@ import java.util.List;
 @Service
 public class DepartmentService {
     @Autowired
-    DepartmentDAO departmentDAO;
+    private DepartmentDAO departmentDAO;
 
     public List<Department> getDepartments() {
         List<Department> departments = new ArrayList<>();
-        departmentDAO.findAll().forEach(departmet -> departments.add(departmet));
+        departmentDAO.findAll().forEach(departments::add);
         return departments;
     }
 

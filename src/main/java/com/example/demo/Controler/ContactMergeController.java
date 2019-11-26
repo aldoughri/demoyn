@@ -7,20 +7,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
 @RestController
 @RequestMapping("/Merge")
 public class ContactMergeController {
     @Autowired
     MergesService mergesService;
 
-    @RequestMapping(value = "/getContacts",method = RequestMethod.GET)
+    @RequestMapping(value = "/getContacts", method = RequestMethod.GET)
     public ModelAndView getDepartments() {
         return new ModelAndView("Employee", "groups", mergesService.getMerges());
     }
 
 
     //STEP2
-    @RequestMapping(value = "get/{id}",method = RequestMethod.GET)
+    @RequestMapping(value = "get/{id}", method = RequestMethod.GET)
     @ResponseBody
     public String show(@PathVariable Long id) {
         mergesService.getId(id);
@@ -28,7 +29,7 @@ public class ContactMergeController {
     }
 
     //STEP3
-    @RequestMapping(value = "/new",method = RequestMethod.GET)
+    @RequestMapping(value = "/new", method = RequestMethod.GET)
     public String employeeForm(Model model) {
 
         model.addAttribute("Group", new ContactsGroup());
@@ -43,7 +44,7 @@ public class ContactMergeController {
         return "subission successful of no." + contactMerge.getId();
     }
 
-    @RequestMapping(value = "/del/{id}",method = RequestMethod.GET)
+    @RequestMapping(value = "/del/{id}", method = RequestMethod.GET)
     public String deleteDepartment(@PathVariable(value = "id") Long id) {
 
         mergesService.remove(id);

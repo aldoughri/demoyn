@@ -25,9 +25,9 @@ public class UserController {
    /*     return new ModelAndView("UserPage", "users", userService.users())
                 .addObject("massage", "get all users");
    */
-         userService.users();
+        userService.users();
         return new ModelAndView("UserHome",
-                "users",userService.users());
+                "users", userService.users());
     }
 
 
@@ -44,28 +44,29 @@ public class UserController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String loggedUsername = auth.getName();
         userService.deleteUser(id);
-        return new ModelAndView("redirect:/","massage",
-                "deleted user completed "+id);
+        return new ModelAndView("redirect:/", "massage",
+                "deleted user completed " + id);
     }
 
-    @RequestMapping(value = "add/user", method = RequestMethod.POST)
+    @RequestMapping(value = "add", method = RequestMethod.POST)
     public ModelAndView createUser(@RequestBody User user) {
-        if (userService.findUsername(user.getUsername()) != null) {
-            return new ModelAndView("redirect:/add","massage",
-                    "Username already exist") ;
+        if (userService.findUsername(user.getEmail()) != null) {
+            return new ModelAndView("redirect:/add", "massage",
+                    "Username already exist");
         }
         userService.addUser(user);
-         return new ModelAndView("redirect:/") ;
+        return new ModelAndView("redirect:/");
     }
 
     @RequestMapping(value = "/edit/user/{id}", method = RequestMethod.GET)
     public ModelAndView updateUser(@RequestBody User appUser) {
 
         userService.addUser(appUser);
-        return new ModelAndView("UserForm","user",userService.finduser(appUser.getId()));
+        return new ModelAndView("UserForm", "user", userService.finduser(appUser.getId()));
     }
-    @RequestMapping(value = "add/user",method = RequestMethod.GET)
+
+    @RequestMapping(value = "add", method = RequestMethod.GET)
     public ModelAndView createUser() {
-    return new ModelAndView("NewUser","user",new User());
+        return new ModelAndView("NewUser", "user", new User());
     }
-    }
+}

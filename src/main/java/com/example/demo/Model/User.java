@@ -1,24 +1,18 @@
 package com.example.demo.Model;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.List;
 
-
 @Entity
-public class User implements UserDetails {
+public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private long id;
     @NotNull
     private String FullName;
     @NotNull
@@ -26,33 +20,92 @@ public class User implements UserDetails {
     @NotNull
     private String LastName;
 
+    private String username;
     @NotNull
     @Column(unique = true)
     private String email;
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String password;
     @NotNull
     @Column(nullable = false)
-    private String role;
+    private String password;
+
+    private int active;
+
+    private String roles = "";
+
+    private String permissions = "";
     @ManyToOne
     @JoinColumn
     private Department department;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
-    List<Contact> contacts;
+    private List<Contact> contacts;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    List<ContactsGroup> contactsGroups;
+    private List<ContactsGroup> contactsGroups;
 
-    public User() {
+    public User(@NotNull String fullName, @NotNull String firstName, @NotNull String lastName, @NotNull String email, @NotNull String password, String roles, String permissions) {
+        FirstName = firstName;
+        LastName = lastName;
 
+        this.email = email;
+
+        this.password = password;
+        this.roles = roles;
+        this.permissions = permissions;
+        this.active = 1;
     }
 
-    public Long getId() {
+    public User() {
+    }
+
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public int getActive() {
+        return active;
+    }
+
+    public void setActive(int active) {
+        this.active = active;
+    }
+
+
+    public String getRoles() {
+        return roles;
+    }
+
+    public void setRoles(String roles) {
+        this.roles = roles;
+    }
+
+    public String getPermissions() {
+        return permissions;
+    }
+
+    public List<String> getRoleList() {
+        if (this.roles.length() > 0) {
+            return Arrays.asList(this.roles.split(","));
+        }
+        return new ArrayList<>();
+    }
+
+    public List<String> getPermissionList() {
+        if (this.permissions.length() > 0) {
+            return Arrays.asList(this.permissions.split(","));
+        }
+        return new ArrayList<>();
     }
 
     public String getFullName() {
@@ -60,7 +113,7 @@ public class User implements UserDetails {
     }
 
     public void setFullName(String fullName) {
-        FullName = FirstName+" "+LastName;
+        FullName = fullName;
     }
 
     public String getFirstName() {
@@ -87,9 +140,6 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public Department getDepartment() {
         return department;
@@ -115,54 +165,30 @@ public class User implements UserDetails {
         this.contactsGroups = contactsGroups;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-
-    @Override
     public String getUsername() {
-        return email;
+        return username;
     }
 
-    public String getRole() {
-        return role;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-
-    @JsonIgnore
     @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
-    @JsonIgnore
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @JsonIgnore
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @JsonIgnore
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @JsonIgnore
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        Collection<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(role));
-        return authorities;
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", FullName='" + FullName + '\'' +
+                ", FirstName='" + FirstName + '\'' +
+                ", LastName='" + LastName + '\'' +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", active=" + active +
+                ", roles='" + roles + '\'' +
+                ", permissions='" + permissions + '\'' +
+                ", department=" + department +
+                ", contacts=" + contacts +
+                ", contactsGroups=" + contactsGroups +
+                '}';
     }
 }
