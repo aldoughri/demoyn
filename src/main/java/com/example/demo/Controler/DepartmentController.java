@@ -31,22 +31,36 @@ public class DepartmentController {
 
     //STEP3
     @RequestMapping(value = "/new", method = RequestMethod.GET)
-    public String employeeForm(Model model) {
+    public ModelAndView employeeForm(Model model) {
 
         model.addAttribute("department", new Department());
-        return "Dform";
+  //      model.addAttribute("url","");
+
+        return new ModelAndView("Dform");
     }
 
     @RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
-    public String employeeUpdate(Model model, @PathVariable Long id) {
+    public ModelAndView employeeUpdate(Model model, @PathVariable Long id) {
         Department department = departmentService.getDepid(id);
+        if(department==null){
+            return new ModelAndView("redirect:/");
+        }
+
+        model.addAttribute("url","/edit");
         model.addAttribute("department", department);
-        return "Dform";
+        return new ModelAndView("Dform");
     }
 
-    @PostMapping("/departments")
+    @PostMapping("/employees")
     @ResponseBody
     public String greetingSubmit(@ModelAttribute Department department) {
+        departmentService.add(department);
+        return "subission successful of no." + department.getId();
+    }
+
+    @PostMapping("/employees/edit")
+    @ResponseBody
+    public String greetingSubmitedit(@ModelAttribute Department department) {
         departmentService.add(department);
         return "subission successful of no." + department.getId();
     }
@@ -60,4 +74,5 @@ public class DepartmentController {
         return "delete successful of no." + id;
 
     }
+
 }

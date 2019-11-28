@@ -77,15 +77,13 @@ public class ContactsServiceImpl implements ContactService {
     }
 
     public List<Contact> GetContactsEmployes() {
-        return contactRepl.GetContactsEmployes();
+        List<Contact> list=new ArrayList<>();
+        contactRepl.findAll().get(0).getOwner().getDepartment().getUsers().forEach(user->list.addAll(user.getContacts()));
+
+        return list;
     }
 
-    public List<Contact> GetContactsValAdmin() {
-        return contactRepl.GetContactsValAdmin();
-    }
 
-    public List<Contact> GetContactsAdmin() {
-        return contactRepl.GetContactsAdmin();
-    }
+
 
 }

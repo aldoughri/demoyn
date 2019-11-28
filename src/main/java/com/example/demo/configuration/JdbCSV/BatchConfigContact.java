@@ -15,6 +15,7 @@ import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
 import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 
@@ -36,42 +37,43 @@ public class BatchConfigContact {
     public BatchConfigContact() {
     }
 
-    
+    @Bean("b")
     public JdbcCursorItemReader<Contact> reader(){
         JdbcCursorItemReader<Contact> cursorItemReader = new JdbcCursorItemReader<>();
         cursorItemReader.setDataSource(dataSource);
-        cursorItemReader.setSql("SELECT person_id,first_name,last_name,email,age FROM Contact");
+        cursorItemReader.setSql("SELECT id, check_val, full_name, company, email, first_name, last_name, select_check, contacts_group_id, owner_id FROM `contact` WHERE 1");
         cursorItemReader.setRowMapper(new ContactRowMapper());
         return cursorItemReader;
     }
 
-    
-    private ContactItemProcessor processor(){
+    @Bean( "b")
+    public ContactItemProcessor processor(){
         return new ContactItemProcessor();
     }
 
-    
-    private FlatFileItemWriter<Contact> writer(){
+    @Bean( "b")
+    public FlatFileItemWriter<Contact> writer(){
         FlatFileItemWriter<Contact> writer = new FlatFileItemWriter<>();
-        writer.setResource(new ClassPathResource("Contact.csv"));
+        writer.setResource(new ClassPathResource("ContactFile.csv"));
 
         DelimitedLineAggregator<Contact> lineAggregator = new DelimitedLineAggregator<>();
         lineAggregator.setDelimiter(",");
 
         BeanWrapperFieldExtractor<Contact> fieldExtractor = new BeanWrapperFieldExtractor<>();
+        fieldExtractor.setNames(new String[]{"personId","firstName","lastName","email","age"});
         lineAggregator.setFieldExtractor(fieldExtractor);
 
         writer.setLineAggregator(lineAggregator);
         return writer;
     }
 
-    
-    private Step step1(){
+    @Bean( "b")
+    public Step step1(){
         return stepBuilderFactory.get("step1").<Contact,Contact>chunk(100).reader(reader()).processor(processor()).writer(writer()).build();
     }
 
-    
-    private Job exportPerosnJob(){
+    @Bean( "b")
+    public Job exportPerosnJob(){
         return jobBuilderFactory.get("exportPeronJob").incrementer(new RunIdIncrementer()).flow(step1()).end().build();
     }
 }

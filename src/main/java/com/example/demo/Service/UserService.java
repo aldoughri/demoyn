@@ -1,7 +1,8 @@
 package com.example.demo.Service;
 
+import com.example.demo.Model.Contact;
 import com.example.demo.Model.User;
-import com.example.demo.Repository.UserRepository;
+import com.example.demo.configuration.Securty.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
@@ -22,8 +23,8 @@ public class UserService {
         return users;
     }
 
-    public User findUsername(String email) {
-        return userRep.findByEmail(email);
+    public User findUsername(String username) {
+        return userRep.findByUsername(username).get();
     }
 
     @Secured({"ROLE_ADMIN"})
@@ -48,6 +49,12 @@ public class UserService {
 
     public void deleteUser(Long id) {
         userRep.deleteById(id);
+    }
+    @Secured({"ROLE_ADMIN"})
+    public List<Contact> GetContactsAdmin() {
+        List<Contact> list=new ArrayList<>();
+         userRep.findAll().forEach(u->list.addAll(u.getContacts()));
+         return list;
     }
 
 }

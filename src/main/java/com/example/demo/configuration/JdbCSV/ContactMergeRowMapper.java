@@ -11,6 +11,6 @@ public class ContactMergeRowMapper implements RowMapper<ContactMerge> {
     @Override
     public ContactMerge mapRow(ResultSet rs, int rowNum) throws SQLException {
         ContactMerge person = new ContactMerge();
-        person.setId(rs.getLong("person_id"));
+        person.setId(rs.getLong("id"));
         return person;
     }    }

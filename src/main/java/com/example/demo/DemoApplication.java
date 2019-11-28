@@ -9,10 +9,10 @@ import org.springframework.context.ConfigurableApplicationContext;
 public class DemoApplication {
 
     public static void main(String[] args) {
-        ConfigurableApplicationContext ctx= SpringApplication.run(DemoApplication.class, args);
-        CallCommandCSV callCommandCSV=ctx.getBean(CallCommandCSV.class);
+        /*ConfigurableApplicationContext ctx=*/ SpringApplication.run(DemoApplication.class, args);
+        /*CallCommandCSV callCommandCSV=ctx.getBean(CallCommandCSV.class);
         callCommandCSV.csvBatch();
-
+*/
     }
 
 }

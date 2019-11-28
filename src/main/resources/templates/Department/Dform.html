@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"><head>
+
+    <title>Getting Started: Handling Form Submission</title>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+</head>
+<body>
+<h1>Form</h1>
+<form action="#" th:action="@{/department/employees}" th:object="${department}" method="post">
+     <p>Department name: <input type="text" th:field="*{name}" /></p>
+    <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+</form>
+</body>
+</html>

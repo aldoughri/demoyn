@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class GrupsSrevice {
+public class GroupsService {
     @Autowired
     GroupDAO groupDAO;
 

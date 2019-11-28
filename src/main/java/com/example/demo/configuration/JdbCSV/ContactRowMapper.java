@@ -11,10 +11,7 @@ import java.sql.SQLException;
         @Override
         public Contact mapRow(ResultSet rs, int rowNum) throws SQLException {
             Contact person = new Contact();
-            person.setId(rs.getLong("person_id"));
-            person.setFirstName(rs.getString("first_name"));
-            person.setLastName(rs.getString("last_name"));
-            person.setEmail(rs.getString("email"));
+            person.setId(rs.getLong("id"));
             return person;
         }
 

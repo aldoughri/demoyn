@@ -13,6 +13,6 @@ public class CallCommandCSV {
     public void csvBatch(){
         JdbcCursorItemReader<ContactMerge> batchConfigContactMerge=new BatchConfigContactMerge().reader();
         JdbcCursorItemReader<Contact> batchConfigContact=new BatchConfigContact().reader();
-
+        System.out.println("Export to CSV file done");
     }
 }

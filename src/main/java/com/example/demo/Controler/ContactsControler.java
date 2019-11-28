@@ -18,20 +18,9 @@ public class ContactsControler {
     @Autowired
     private ContactsServiceImpl contactServ;
     Logger logger = LoggerFactory.getLogger(ContactsControler.class);
-    @PreAuthorize("hasRole('ADMIN')")
-    @RequestMapping(value = "/val", method = RequestMethod.GET)
-    public ModelAndView ContactsVal(Model model) {
-        model.addAttribute("contacts", contactServ.GetContactsValAdmin());
-        return new ModelAndView("HomeContact", "massage", "Validation ");
 
-    }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @RequestMapping(value = "/all", method = RequestMethod.GET)
-    public ModelAndView AllContacts(Model model) {
-        model.addAttribute("contacts", contactServ.GetContactsAdmin());
-        return new ModelAndView("HomeContact", "massage", "All ");
-    }
+
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
     public ModelAndView Contacts(Model model) {

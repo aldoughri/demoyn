@@ -1,8 +1,8 @@
 package com.example.demo.Model;
 
 
+
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,18 +13,10 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @NotNull
-    private String FullName;
-    @NotNull
-    private String FirstName;
-    @NotNull
-    private String LastName;
 
+    @Column(nullable = false)
     private String username;
-    @NotNull
-    @Column(unique = true)
-    private String email;
-    @NotNull
+
     @Column(nullable = false)
     private String password;
 
@@ -42,104 +34,78 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<ContactsGroup> contactsGroups;
 
-    public User(@NotNull String fullName, @NotNull String firstName, @NotNull String lastName, @NotNull String email, @NotNull String password, String roles, String permissions) {
-        FirstName = firstName;
-        LastName = lastName;
 
-        this.email = email;
-
+    public User(String username, String password, String roles, String permissions){
+        this.username = username;
         this.password = password;
         this.roles = roles;
         this.permissions = permissions;
         this.active = 1;
     }
 
-    public User() {
-    }
+    public User(){}
 
     public long getId() {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public String getUsername() {
+        return username;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public int getActive() {
         return active;
     }
 
-    public void setActive(int active) {
-        this.active = active;
-    }
-
-
     public String getRoles() {
         return roles;
-    }
-
-    public void setRoles(String roles) {
-        this.roles = roles;
     }
 
     public String getPermissions() {
         return permissions;
     }
 
-    public List<String> getRoleList() {
-        if (this.roles.length() > 0) {
+    public List<String> getRoleList(){
+        if(this.roles.length() > 0){
             return Arrays.asList(this.roles.split(","));
         }
         return new ArrayList<>();
     }
 
-    public List<String> getPermissionList() {
-        if (this.permissions.length() > 0) {
+    public List<String> getPermissionList(){
+        if(this.permissions.length() > 0){
             return Arrays.asList(this.permissions.split(","));
         }
         return new ArrayList<>();
     }
 
-    public String getFullName() {
-        return FullName;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public void setFullName(String fullName) {
-        FullName = fullName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getFirstName() {
-        return FirstName;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public void setFirstName(String firstName) {
-        FirstName = firstName;
+    public void setActive(int active) {
+        this.active = active;
     }
 
-    public String getLastName() {
-        return LastName;
+    public void setRoles(String roles) {
+        this.roles = roles;
     }
 
-    public void setLastName(String lastName) {
-        LastName = lastName;
+    public void setPermissions(String permissions) {
+        this.permissions = permissions;
     }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
 
     public Department getDepartment() {
         return department;
@@ -165,23 +131,11 @@ public class User {
         this.contactsGroups = contactsGroups;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", FullName='" + FullName + '\'' +
-                ", FirstName='" + FirstName + '\'' +
-                ", LastName='" + LastName + '\'' +
                 ", username='" + username + '\'' +
-                ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", active=" + active +
                 ", roles='" + roles + '\'' +
@@ -192,3 +146,4 @@ public class User {
                 '}';
     }
 }
+

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -18,6 +19,13 @@ public class UserController {
     @Autowired
     UserService userService;
 
+
+
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    public ModelAndView AllContacts(Model model) {
+        model.addAttribute("contacts", userService.GetContactsAdmin());
+        return new ModelAndView("HomeContact", "massage", "All ");
+    }
     @RequestMapping(value = "/", method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView users() {
@@ -50,7 +58,7 @@ public class UserController {
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public ModelAndView createUser(@RequestBody User user) {
-        if (userService.findUsername(user.getEmail()) != null) {
+        if (userService.findUsername(user.getUsername()) != null) {
             return new ModelAndView("redirect:/add", "massage",
                     "Username already exist");
         }
